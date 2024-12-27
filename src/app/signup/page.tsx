@@ -20,10 +20,8 @@ export default function SignupPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
-    // Simulate API request
     try {
       const res = await axios.post("https://multitenant-social-platform-backend.vercel.app/api/auth/register", { email, password, name: username })
-      console.log('Signing up with:', { email, password, username })
       if (res.data.statusCode === 201) {
         setIsLoading(false)
         router.push(`/${username}/login`)
@@ -45,10 +43,10 @@ export default function SignupPage() {
           <form onSubmit={handleSubmit}>
             <div className="grid w-full items-center gap-4">
               <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="username">Username</Label>
+                <Label htmlFor="username">Server Name</Label>
                 <Input
                   id="username"
-                  placeholder="Enter your username"
+                  placeholder="Enter your server name"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   required

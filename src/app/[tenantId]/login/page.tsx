@@ -21,7 +21,6 @@ export default function LoginPage({ params }: { params: { tenantId: string } }) 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
-    // Simulate API request
     try {
       console.log("tenant:", tenantId)
       const res = await axios.post("https://multitenant-social-platform-backend.vercel.app/api/auth/login", { email, password, name: tenantId })
