@@ -24,7 +24,7 @@ export default function LoginPage({ params }: { params: { tenantId: string } }) 
     // Simulate API request
     try {
       console.log("tenant:", tenantId)
-      const res = await axios.post("http://localhost:3001/api/auth/login", { email, password, name: tenantId })
+      const res = await axios.post("https://multitenant-social-platform-backend.vercel.app/api/auth/login", { email, password, name: tenantId })
       if (res.data.statusCode === 200) {
         setIsLoading(false)
         localStorage.setItem("token", res.data.responseObject.accessToken)

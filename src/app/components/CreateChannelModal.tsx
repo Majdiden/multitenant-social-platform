@@ -13,7 +13,7 @@ interface CreateChannelModalProps {
 }
 
 async function createChannel(tenantId: string, data: { name: string; type: string; }) {
-    const response = await axios.post(`http://localhost:3001/api/${tenantId}`, { ...data, serverId: tenantId }, {
+    const response = await axios.post(`https://multitenant-social-platform-backend.vercel.app/api/${tenantId}`, { ...data, serverId: tenantId }, {
         headers: {
             "Authorization": `Bearer ${localStorage.getItem("token")}`
         }

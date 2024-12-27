@@ -22,7 +22,7 @@ export default function SignupPage() {
     setIsLoading(true)
     // Simulate API request
     try {
-      const res = await axios.post("http://localhost:3001/api/auth/register", { email, password, name: username })
+      const res = await axios.post("https://multitenant-social-platform-backend.vercel.app/api/auth/register", { email, password, name: username })
       console.log('Signing up with:', { email, password, username })
       if (res.data.statusCode === 201) {
         setIsLoading(false)

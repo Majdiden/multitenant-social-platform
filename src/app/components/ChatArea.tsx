@@ -11,7 +11,7 @@ import axios from 'axios'
 
 async function fetchMessages(tenantId: string, channelId: string) {
   try {
-    const res = await axios.get(`http://localhost:3001/api/${tenantId}/${channelId}/messages`, {
+    const res = await axios.get(`https://multitenant-social-platform-backend.vercel.app/api/${tenantId}/${channelId}/messages`, {
       headers: {
         'Authorization': `Bearer ${localStorage.getItem("token")}`
       }
@@ -27,7 +27,7 @@ async function fetchMessages(tenantId: string, channelId: string) {
 
 async function sendMessage(userId: string, tenantId: string, channelId: string, content: string) {
   try {
-    const res = await axios.post(`http://localhost:3001/api/${tenantId}/${channelId}`,
+    const res = await axios.post(`https://multitenant-social-platform-backend.vercel.app/api/${tenantId}/${channelId}`,
       { content, channelId, userId },
       {
         headers: {

@@ -11,7 +11,7 @@ import { cn } from '@/lib/utils'
 
 async function fetchChannels(tenantId: string) {
   try {
-    const res = await axios.get(`http://localhost:3001/api/${tenantId}`, {
+    const res = await axios.get(`https://multitenant-social-platform-backend.vercel.app/api/${tenantId}`, {
       headers: {
         'Authorization': `Bearer ${localStorage.getItem("token")}`
       }
