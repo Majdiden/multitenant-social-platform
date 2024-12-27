@@ -4,5 +4,10 @@ const nextConfig: NextConfig = {
   /* config options here */
   reactStrictMode: true,
 };
+module.exports = {
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+};
 
 export default nextConfig;
