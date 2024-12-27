@@ -1,40 +1,121 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
+# Multi-tenant Social Platform (Discord as use-case)
+Preview the app here: [https://multitenant-social-platform.vercel.app](https://multitenant-social-platform.vercel.app)
 
-## Getting Started
+## Architecture Overview
+The application implements a multi-tenant system where each server (tenant) operates in isolation with its own:
+- Channel management system
+- User authentication and authorization
+- Dedicated URL routing (`/{tenantId}`)
 
-First, run the development server:
+## Core Features
+### Multi-tenant Authentication
+The authentication system manages tenant-specific user sessions:
+- Server registration with unique tenant names
+- Tenant-specific login system with email/password
+- JWT token management with localStorage persistence
+- Token-based API request authorization
+- Automatic routing to tenant-specific pages
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+### Channel Management
+Each tenant can manage their communication channels through:
+- Channel creation with name and type specification
+- Channel listing with tenant-specific views
+
+### Routing System
+The application implements a dynamic routing system:
+- Root route (`/signup`) for server registration
+- Tenant-specific routes (`/{tenantId}`) for server operations
+- Channel-specific routes (`/{tenantId}/{channelId}`) for messaging
+- Protected routes with authentication checks
+- Login routes (`/{tenantId}/login`) for tenant access
+
+## Component Structure
+### Core Components
+1. **Layout Components**:
+   - `RootLayout`: Base application shell with QueryProvider
+   - `TenantLayout`: Tenant-specific layout with sidebar and channel list
+   
+2. **Authentication Components**:
+   - `SignupPage`: Server creation interface
+   - `LoginPage`: Tenant-specific login form
+   - Both using shadcn/ui components for consistent styling
+
+3. **Communication Components**:
+   - `ChatArea`: Real-time messaging interface
+   - `ChannelList`: Channel navigation sidebar
+   - `Sidebar`: Server management tools
+   - `CreateChannelModal`: Channel creation interface
+
+### Key Features Implementation
+1. **ChatArea** (`ChatArea.tsx`):
+```typescript
+- Real-time message fetching using TanStack Query
+- Message sending with optimistic updates
+- Avatar and timestamp display
+- Loading states management
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. **Channel Management** (`ChannelList.tsx`):
+```typescript
+- Dynamic channel fetching based on tenant
+- Automatic first channel selection
+- Active channel highlighting
+- Error state handling
+```
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+3. **Server Controls** (`Sidebar.tsx`):
+```typescript
+- Channel creation trigger
+- Logout functionality
+- Tooltip-enhanced UI elements
+```
 
-[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+## State Management
+The application uses TanStack Query for server state management:
+- Message caching and invalidation
+- Channel list synchronization
+- Optimistic updates for message sending
+- Loading and error states
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
+## API Integration
+The API integration is handled through:
+- Axios for HTTP requests
+- Automatic token injection in request headers
+- Tenant-specific endpoint handling:
+  ```typescript
+  - GET /{tenantId} - Fetch channels
+  - GET /{tenantId}/{channelId}/messages - Fetch messages
+  - POST /{tenantId}/{channelId} - Send message
+  - POST /{tenantId} - Create channel
+  ```
 
-This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Getting Started
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/Majdiden/multitenant-social-platform.git
+   ```
 
-## Learn More
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-To learn more about Next.js, take a look at the following resources:
+4. Run the development server:
+   ```bash
+   npm run dev
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
+5. Access the application at `http://localhost:3000`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+## Authentication Flow
+1. Server Creation:
+   - User provides server name (tenant ID)
+   - Email and password registration
+   - Automatic redirect to login
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
+2. Server Access:
+   - Tenant-specific login page (/tenant/login)
+   - JWT token generation
+   - Secure local storage
+   - Automatic channel routing
